@@ -25,7 +25,7 @@ jobs:
         uses: "actions/checkout@v4"
         with:
           repository: "ghostty-org/ghostty"
-          ref: "${{ inputs.ghostty-version }}"
+          ref: "v${{ inputs.ghostty-version }}"
           path: "ghostty"
 
       - name: "Install Zig"
