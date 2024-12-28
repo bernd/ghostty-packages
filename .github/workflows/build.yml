@@ -1,0 +1,52 @@
+name: "Build"
+run-name: "Build ${{ inputs.ghostty-version }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      ghostty-version:
+        required: true
+      zig-version:
+        default: "0.13.0"
+        required: true
+
+defaults:
+  run:
+    shell: "bash"
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - name: "Checkout Ghostty ${{ inputs.ghostty-version }}"
+        uses: "actions/checkout@v4"
+        with:
+          repository: "ghostty-org/ghostty"
+          ref: "${{ inputs.ghostty-version }}"
+          path: "ghostty"
+
+      - name: "Install Zig"
+        uses: "mlugg/setup-zig@v1"
+        with:
+          version: "${{ inputs.zig-version }}"
+
+      - name: "Build Ghostty"
+        working-directory: "ghostty"
+        run: |
+          zig build -p "${{ github.workspace }}/output" -Doptimize=ReleaseFast
+
+      - name: "Install nFPM"
+        run: |
+          gh release download -R goreleaser/nfpm --pattern "nfpm_*_amd64.deb" --output nfpm.deb
+          apt-get install -y ./nfpm.deb
+
+      - name: "Build DEB package"
+        env:
+          VERSION: "${{ inputs.ghostty-version }}"
+        run: |
+          # Only contains a ".placeholder" file for now.
+          rm -rf "output/share/man"
+          nfpm package -p deb -f nfpm.yml

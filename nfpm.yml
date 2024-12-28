@@ -1,0 +1,29 @@
+---
+name: "ghostty"
+platform: "linux"
+version: "${VERSION}"
+release: 1
+section: "x11"
+
+description: |
+  Ghostty is a fast, feature-rich, and cross-platform terminal emulator that
+    uses platform-native UI and GPU acceleration.
+
+homepage: "https://ghostty.org/"
+license: "MIT"
+maintainer: "Bernd Ahlers <bernd@users.noreply.github.com>"
+
+depends:
+  - "libgtk-4-1"
+  - "libadwaita-1-0"
+
+scripts:
+  postinstall: "./scripts/postinstall.sh"
+  preremove: "./scripts/preremove.sh"
+
+contents:
+  - src: "./output/bin/ghostty"
+    dst: "/usr/bin/ghostty"
+
+  - src: "./output/share/"
+    dst: "/usr/share"
