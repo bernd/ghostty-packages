@@ -2,7 +2,7 @@
 name: "ghostty"
 platform: "linux"
 version: "${VERSION}"
-release: 1
+release: ${REVISION}
 section: "x11"
 
 description: |
