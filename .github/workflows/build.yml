@@ -1,37 +1,49 @@
 name: "Build"
-run-name: "Build ${{ inputs.ghostty-version }}"
+run-name: "Build ${{ inputs.ghostty-version || github.ref_name }}"
 
 on:
   workflow_dispatch:
     inputs:
       ghostty-version:
         required: true
-      zig-version:
-        default: "0.13.0"
+      package-revision:
         required: true
 
 defaults:
   run:
     shell: "bash"
 
+env:
+  ZIG_VERSION: "0.13.0"
+
 jobs:
   build:
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
+      - name: "Set Ghostty version env"
+        env:
+          version: "${{ inputs.ghostty-version || github.ref_name }}"
+          rev: "${{ inputs.package-revision || github.ref_name}}"
+        run: |
+          {
+            echo "GHOSTTY_VERSION=$(grep -oP "\d+\.\d+\.\d+" <<< "$version")"
+            echo "GHOSTTY_REV=$(grep -oP "\d+$" <<< "$rev")"
+          } | tee -a "$GITHUB_ENV"
+
       - uses: "actions/checkout@v4"
 
-      - name: "Checkout Ghostty ${{ inputs.ghostty-version }}"
+      - name: "Checkout Ghostty ${{ env.GHOSTTY_VERSION }}"
         uses: "actions/checkout@v4"
         with:
           repository: "ghostty-org/ghostty"
-          ref: "v${{ inputs.ghostty-version }}"
+          ref: "v${{ env.GHOSTTY_VERSION }}"
           path: "ghostty"
 
       - name: "Install Zig"
         uses: "mlugg/setup-zig@v1"
         with:
-          version: "${{ inputs.zig-version }}"
+          version: "${{ env.ZIG_VERSION }}"
 
       - name: "Install dependencies"
         run: |
@@ -52,7 +64,8 @@ jobs:
 
       - name: "Build DEB package"
         env:
-          VERSION: "${{ inputs.ghostty-version }}"
+          VERSION: "${{ env.GHOSTTY_VERSION }}"
+          REVISION: "${{ env.GHOSTTY_REV }}"
         run: |
           # Only contains a ".placeholder" file for now.
           rm -rf "output/share/man"
