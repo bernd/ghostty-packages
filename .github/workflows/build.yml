@@ -44,6 +44,8 @@ jobs:
           zig build -p "${{ github.workspace }}/output" -Doptimize=ReleaseFast
 
       - name: "Install nFPM"
+        env:
+          GH_TOKEN: "${{ github.token }}"
         run: |
           gh release download -R goreleaser/nfpm --pattern "nfpm_*_amd64.deb" --output nfpm.deb
           apt-get install -y ./nfpm.deb
