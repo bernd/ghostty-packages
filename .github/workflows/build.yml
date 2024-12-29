@@ -19,7 +19,7 @@ defaults:
 
 permissions:
   attestations: "write"
-  contents: "read"
+  contents: "write"
   id-token: "write"
 
 env:
