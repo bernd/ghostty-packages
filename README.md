@@ -5,9 +5,7 @@ Infrastructure to build [Ghostty](https://ghostty.org/) operating system package
 
 ## Release
 
-The following commands opens an editor instance to enter the message for the
-release tag. The message will be used as text for the release notes.
-
 ```sh
-git tag -a release-<version>-<package-revision>
+git tag release-<version>-<package-revision> # Example: release-1.0.0-1
+git push --tags
 ```
