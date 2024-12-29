@@ -2,7 +2,7 @@
 #
 # See: https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
 
-set -eo pipefail
+set -e
 
 case "$1" in
 	remove)
