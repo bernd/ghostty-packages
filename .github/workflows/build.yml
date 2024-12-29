@@ -78,7 +78,7 @@ jobs:
         run: |
           # Only contains a ".placeholder" file for now.
           rm -rf "output/share/man"
-          nfpm package -p deb -f nfpm.yml
+          nfpm package -p deb -f nfpm.yml -t "ghostty_${{ env.GHOSTTY_VERSION }}-${{ env.GHOSTTY_REV }}_ubuntu2404_amd64.deb"
 
       - uses: "actions/attest-build-provenance@v2"
         if: "startsWith(github.ref, 'refs/tags/')"
