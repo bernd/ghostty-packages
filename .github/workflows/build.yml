@@ -62,7 +62,7 @@ jobs:
       - name: "Build Ghostty"
         working-directory: "ghostty"
         run: |
-          zig build -p "${{ github.workspace }}/output" -Doptimize=ReleaseFast
+          zig build -p "${{ github.workspace }}/output" -Doptimize=ReleaseFast -Dcpu=baseline
 
       - name: "Install nFPM"
         env:
