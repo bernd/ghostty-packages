@@ -90,4 +90,8 @@ jobs:
         env:
           GH_TOKEN: "${{ github.token }}"
         run: |
-          gh release create --notes-from-tag ${{ github.ref_name }} ./ghostty*.deb
+          gh release create \
+            --title "${{ env.GHOSTTY_VERSION }}-${{ env.GHOSTTY_REV }}" \
+            --notes "Packages for Ghostty ${{ env.GHOSTTY_VERSION }}." \
+            ${{ github.ref_name }} \
+            ./ghostty*.deb
