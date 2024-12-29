@@ -48,7 +48,7 @@ jobs:
           GH_TOKEN: "${{ github.token }}"
         run: |
           gh release download -R goreleaser/nfpm --pattern "nfpm_*_amd64.deb" --output nfpm.deb
-          apt-get install -y ./nfpm.deb
+          sudo apt-get install -y ./nfpm.deb
 
       - name: "Build DEB package"
         env:
