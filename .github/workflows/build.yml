@@ -18,8 +18,9 @@ defaults:
     shell: "bash"
 
 permissions:
-  id-token: "write"
   attestations: "write"
+  contents: "read"
+  id-token: "write"
 
 env:
   ZIG_VERSION: "0.13.0"
