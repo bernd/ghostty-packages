@@ -34,7 +34,7 @@ jobs:
           version: "${{ inputs.zig-version }}"
 
       - name: "Install dependencies"
-        run: "apt-get install -y libgtk-4-dev libadwaita-1-dev"
+        run: "sudo apt-get install -y libgtk-4-dev libadwaita-1-dev"
 
       - name: "Build Ghostty"
         working-directory: "ghostty"
